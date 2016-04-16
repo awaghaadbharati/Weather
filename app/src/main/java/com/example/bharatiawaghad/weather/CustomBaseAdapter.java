@@ -25,12 +25,6 @@ public class CustomBaseAdapter extends BaseAdapter {
         this.cityWeatherDetailsArrayList = cityWeatherDetailsArrayList;
         inflater=LayoutInflater.from(context);
     }
-
-    /*  public CustomBaseAdapter(ArrayList<CityWeatherDetails> cityWeatherDetailsArrayList) {
-
-                this.cityWeatherDetailsArrayList = cityWeatherDetailsArrayList;
-            }
-    */
     public void setCityWeatherDetailsArrayList(ArrayList<CityWeatherDetails> cityWeatherDetailsArrayList) {
         this.cityWeatherDetailsArrayList = cityWeatherDetailsArrayList;
     }
@@ -52,22 +46,6 @@ public class CustomBaseAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-            /*LayoutInflater layoutInflater=getLayoutInflater();
-            View row;
-            row = layoutInflater.inflate(R.layout.row, parent, false);
-            TextView location, temperature, weather, wind;
-            location=(TextView)findViewById(R.id.location);
-            temperature=(TextView)findViewById(R.id.temperature);
-            weather=(TextView)findViewById(R.id.weather);
-            wind=(TextView)findViewById(R.id.wind);
-            System.out.println("Position" + position);
-            System.out.println("City Name"+getCityWeatherDetailsArrayList().get(position).getCityName());
-            location.setText(getCityWeatherDetailsArrayList().get(position).getCityName());
-            temperature.setText(getCityWeatherDetailsArrayList().get(position).getTemperature().toString());
-            weather.setText(getCityWeatherDetailsArrayList().get(position).getWeatherDescription());
-            wind.setText(getCityWeatherDetailsArrayList().get(position).getWindSpeeed());
-            return row;*/
-
         MyViewHolder myViewHolder;
         if(convertView==null)
         {
@@ -79,7 +57,6 @@ public class CustomBaseAdapter extends BaseAdapter {
         {
             myViewHolder=(MyViewHolder)convertView.getTag();
         }
-
         myViewHolder.location=(TextView)convertView.findViewById(R.id.location);
         myViewHolder.temperature=(TextView)convertView.findViewById(R.id.temperature);
         myViewHolder.weather=(TextView)convertView.findViewById(R.id.weather);

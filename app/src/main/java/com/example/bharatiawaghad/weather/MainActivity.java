@@ -72,28 +72,15 @@ public class MainActivity extends AppCompatActivity {
                             ArrayList<CityWeatherDetails> cityList = new ArrayList<CityWeatherDetails>();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject cityDetails = (JSONObject) jsonArray.get(i);
-                               // System.out.println("Hi");
                                 JSONArray weather=(JSONArray)cityDetails.get("weather");
                                 String cityName = (String)cityDetails.get("name");
                                 String weatherDescription= (String)((JSONObject)weather.get(0)).get("main");
                                 double temp=(Double)((JSONObject)cityDetails.get("main")).get("temp");
                                 System.out.println("Speed"+((JSONObject)cityDetails.get("wind")).get("speed"));
-                                try
-                                {
-                                    double speed=(double)((JSONObject)cityDetails.get("wind")).get("speed");
-                                    CityWeatherDetails row = new CityWeatherDetails(cityName,weatherDescription,temp,speed);
-                                    cityList.add(row);
+                                double speed=(double)((JSONObject)cityDetails.get("wind")).get("speed");
+                                CityWeatherDetails row = new CityWeatherDetails(cityName,weatherDescription,temp,speed);
+                                cityList.add(row);
                                 }
-                                catch (ClassCastException e)
-                                {
-                                    System.out.println("Error"+e);
-                                }
-                                //Double temp =100.9d;
-                                //int speed =100;
-                               // CityWeatherDetails row = new CityWeatherDetails(cityName,weatherDescription,temp,speed);
-                                //JSONObject temp=(JSONObject)cityDetails.get("main");
-
-                            }
                             ListView cityListView = (ListView) findViewById(R.id.cityListView);
                             CustomBaseAdapter  CityListadapter=new CustomBaseAdapter(getBaseContext(),cityList);
                             //SimpleAdapter CityListadapter = new SimpleAdapter(getBaseContext(), cityList, R.layout.row, new String[]{"Name", "Temperature", "Weather", "Wind"}, new int[]{R.id.location, R.id.temperature, R.id.weather, R.id.wind});
