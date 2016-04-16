@@ -1,18 +1,26 @@
 package com.example.bharatiawaghad.weather;
 
+import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -59,25 +67,39 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray jsonArray = response.getJSONArray("list");
-                            System.out.println("Length" + jsonArray.length());
+                            //System.out.println("Length" + jsonArray.length());
                             /*static*/
-                            ArrayList<HashMap<String, ?>> cityList = new ArrayList<HashMap<String, ?>>();
+                            ArrayList<CityWeatherDetails> cityList = new ArrayList<CityWeatherDetails>();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject cityDetails = (JSONObject) jsonArray.get(i);
-                                System.out.println("Hi");
-                                HashMap<String, Object> row = new HashMap<String, Object>();
-                                row.put("Name", cityDetails.get("name"));
+                               // System.out.println("Hi");
                                 JSONArray weather=(JSONArray)cityDetails.get("weather");
+                                String cityName = (String)cityDetails.get("name");
+                                String weatherDescription= (String)((JSONObject)weather.get(0)).get("main");
+                                double temp=(Double)((JSONObject)cityDetails.get("main")).get("temp");
+                                System.out.println("Speed"+((JSONObject)cityDetails.get("wind")).get("speed"));
+                                try
+                                {
+                                    double speed=(double)((JSONObject)cityDetails.get("wind")).get("speed");
+                                    CityWeatherDetails row = new CityWeatherDetails(cityName,weatherDescription,temp,speed);
+                                    cityList.add(row);
+                                }
+                                catch (ClassCastException e)
+                                {
+                                    System.out.println("Error"+e);
+                                }
+                                //Double temp =100.9d;
+                                //int speed =100;
+                               // CityWeatherDetails row = new CityWeatherDetails(cityName,weatherDescription,temp,speed);
                                 //JSONObject temp=(JSONObject)cityDetails.get("main");
-                                row.put("Temperature", ((JSONObject)cityDetails.get("main")).get("temp"));
-                                row.put("Weather", (String)((JSONObject)weather.get(0)).get("main"));
-                                row.put("Wind", ((JSONObject)cityDetails.get("wind"))/*.get("speed")*/);
-                                cityList.add(row);
-                                ListView cityListView = (ListView) findViewById(R.id.cityListView);
-                                SimpleAdapter CityListadapter = new SimpleAdapter(getBaseContext(), cityList, R.layout.row, new String[]{"Name", "Temperature", "Weather", "Wind"}, new int[]{R.id.location, R.id.temperature, R.id.weather, R.id.wind});
-                                cityListView.setAdapter(CityListadapter);
-                                System.out.println("Hello");
+
                             }
+                            ListView cityListView = (ListView) findViewById(R.id.cityListView);
+                            CustomBaseAdapter  CityListadapter=new CustomBaseAdapter(getBaseContext(),cityList);
+                            //SimpleAdapter CityListadapter = new SimpleAdapter(getBaseContext(), cityList, R.layout.row, new String[]{"Name", "Temperature", "Weather", "Wind"}, new int[]{R.id.location, R.id.temperature, R.id.weather, R.id.wind});
+                            cityListView.setAdapter(CityListadapter);
+                            CityListadapter.notifyDataSetChanged();
+                            System.out.println("Hello");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -116,4 +138,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
